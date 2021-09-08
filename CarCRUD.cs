@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 
 namespace MKcrud
@@ -11,6 +10,7 @@ namespace MKcrud
 
         public void Create(Car car)
         {
+            //define a var that store the root 
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
             
             string Mjson = File.ReadAllText(path);
@@ -34,14 +34,13 @@ namespace MKcrud
              Console.WriteLine("insert DOORS:");
              car.NumbersDoor = Convert.ToInt32(Console.ReadLine());
 
+            Console.ReadKey();
+            Console.WriteLine("the Car updates successfully!");
              cars.Add(car);
 
              var json = JsonSerializer.Serialize(cars);
              File.WriteAllText(path, json);
         }
-        //
-        //C7ar cart = JsonSerializer.Deserialize<Car>(mijson);
-
         public void Get(int id)
          {
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
@@ -91,9 +90,6 @@ namespace MKcrud
                 File.WriteAllText(path, json);
 
             }
-
-
-
             return find;
          }
         public void Delete(int id)
