@@ -25,6 +25,9 @@ namespace MKcrud
 
                     break;
                 case 3:
+                    Console.WriteLine("Insert the ID for update the Car:");
+                    var update = Convert.ToInt32(Console.ReadLine());
+                    crud.Update(update);
                     break;
                 case 4:
                     break;

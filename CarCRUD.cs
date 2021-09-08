@@ -45,10 +45,10 @@ namespace MKcrud
         public void Get(int id)
          {
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-
             string Mjson = File.ReadAllText(path);
             List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
-             var find = cars.Find(x => x.Id == id);
+
+            var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
                 Console.WriteLine("ID not found");
@@ -56,13 +56,46 @@ namespace MKcrud
             else
             {
                 Console.WriteLine("The car exist on the list");
+                
             }
 
         }
-         /*public Car Update(Car car)
+         public Car Update(int id)
          {
+            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
+            string Mjson = File.ReadAllText(path);
+            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
+            var find = cars.Find(x => x.Id == id);
+            if (find == null)
+            {
+                Console.WriteLine("ID not found");
+            }
+            else
+            {
+                Console.WriteLine("Insert MODEL:");
+                find.Model = Console.ReadLine();
 
-         }*/
+                Console.WriteLine("Insert BRAND:");
+                find.Brand = Console.ReadLine();
+
+                Console.WriteLine("Insert TRANSMISSION:");
+                find.Trasmission = Console.ReadLine();
+
+                Console.WriteLine("Insert COLOR:");
+                find.Color = Console.ReadLine();
+
+                Console.WriteLine("Insert DOORS:");
+                find.NumbersDoor = Convert.ToInt32(Console.ReadLine());
+
+                var json = JsonSerializer.Serialize(cars);
+                File.WriteAllText(path, json);
+
+            }
+
+
+
+            return find;
+         }
         public void Delete(int id)
         {
 
