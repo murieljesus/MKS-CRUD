@@ -7,44 +7,25 @@ namespace MKcrud
 {
     public class CarCRUD
     {
-
         public void Create(Car car)
         {
             //define a var that store the root 
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            
-            string Mjson = File.ReadAllText(path);
+            var Mjson = File.ReadAllText(path);
+
             List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
 
-            Console.WriteLine("insert Id number:");
-            car.Id = Convert.ToInt32(Console.ReadLine());
+            var menu = new MenuConsole();
+            menu.Menu(car);
+            cars.Add(car);
 
-            Console.WriteLine("insert MODEL:");
-            car.Model = Console.ReadLine();
-
-             Console.WriteLine("insert BRAND:");
-             car.Brand = Console.ReadLine();
-
-             Console.WriteLine("insert TRANSMISSION:");
-             car.Trasmission = Console.ReadLine();
-
-             Console.WriteLine("insert COLOR:");
-             car.Color = Console.ReadLine();
-
-             Console.WriteLine("insert DOORS:");
-             car.NumbersDoor = Convert.ToInt32(Console.ReadLine());
-
-            Console.ReadKey();
-            Console.WriteLine("the Car updates successfully!");
-             cars.Add(car);
-
-             var json = JsonSerializer.Serialize(cars);
-             File.WriteAllText(path, json);
+            var json = JsonSerializer.Serialize(cars);
+            File.WriteAllText(path, json);
         }
         public void Get(int id)
-         {
+        {
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            string Mjson = File.ReadAllText(path);
+            var Mjson = File.ReadAllText(path);
             List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
 
             var find = cars.Find(x => x.Id == id);
@@ -55,14 +36,14 @@ namespace MKcrud
             else
             {
                 Console.WriteLine("The car exist on the list");
-                
+
             }
 
         }
-         public Car Update(int id)
-         {
+        public Car Update(int id)
+        {
             var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            string Mjson = File.ReadAllText(path);
+            var Mjson = File.ReadAllText(path);
             List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
             var find = cars.Find(x => x.Id == id);
             if (find == null)
@@ -71,32 +52,32 @@ namespace MKcrud
             }
             else
             {
-                Console.WriteLine("Insert MODEL:");
-                find.Model = Console.ReadLine();
 
-                Console.WriteLine("Insert BRAND:");
-                find.Brand = Console.ReadLine();
-
-                Console.WriteLine("Insert TRANSMISSION:");
-                find.Trasmission = Console.ReadLine();
-
-                Console.WriteLine("Insert COLOR:");
-                find.Color = Console.ReadLine();
-
-                Console.WriteLine("Insert DOORS:");
-                find.NumbersDoor = Convert.ToInt32(Console.ReadLine());
+                var menu = new MenuConsole();
+                menu.Menu(find);
 
                 var json = JsonSerializer.Serialize(cars);
                 File.WriteAllText(path, json);
-
             }
             return find;
-         }
+        }
         public void Delete(int id)
         {
+            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
+            var Mjson = File.ReadAllText(path);
+            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
 
+            var find = cars.Find(x => x.Id == id);
+            if (find == null)
+            {
+                Console.WriteLine("ID not found");
+            }
+            else if (cars.Remove(find) == true)
+            {
+                Console.WriteLine("The was deleted successfully!");
+                var json = JsonSerializer.Serialize(cars);
+                File.WriteAllText(path, json);
+            }
         }
-
-
     }
 }
