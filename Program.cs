@@ -1,9 +1,13 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace MKcrud
 {
     class Program
     {
+
+
         static void Main(string[] args)
         {
             //display console menu
@@ -24,7 +28,7 @@ namespace MKcrud
                     break;
                 case 2:
                     Console.WriteLine("Insert the ID number:");
-                    var id= Convert.ToInt32(Console.ReadLine());
+                    var id = Convert.ToInt32(Console.ReadLine());
                     crud.Get(id);
 
                     break;
@@ -34,8 +38,11 @@ namespace MKcrud
                     crud.Update(update);
                     break;
                 case 4:
+                    Console.WriteLine("Insert the ID for delete:");
+                    var del = Convert.ToInt32(Console.ReadLine());
+                    crud.Delete(del);
                     break;
             }
         }
     }
-}       
+}
