@@ -1,33 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+
 
 namespace MKcrud
 {
-    public class CarCRUD
+    public class CarCRUD : ICrud
     {
-        public void Create(Car car)
+        public void Create()
         {
-            //define a var that store the root 
-            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            var Mjson = File.ReadAllText(path);
-
-            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
-
             var menu = new MenuConsole();
-            menu.Menu(car);
-            cars.Add(car);
-
-            var json = JsonSerializer.Serialize(cars);
-            File.WriteAllText(path, json);
+            var cars = AccessFile.GetCars();
+            var id = cars.Count;
+            var newCar = menu.CarMenu(id);
+            cars.Add(newCar);
+            AccessFile.SetCars(cars);
         }
         public void Get(int id)
         {
-            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            var Mjson = File.ReadAllText(path);
-            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
-
+            var cars = AccessFile.GetCars();
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -36,15 +25,12 @@ namespace MKcrud
             else
             {
                 Console.WriteLine("The car exist on the list");
-
             }
 
         }
-        public Car Update(int id)
+        public void Update(int id)
         {
-            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            var Mjson = File.ReadAllText(path);
-            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
+            var cars = AccessFile.GetCars();
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -52,21 +38,20 @@ namespace MKcrud
             }
             else
             {
-
                 var menu = new MenuConsole();
-                menu.Menu(find);
+                var newCar = menu.CarMenu(find.Id);
+                find.Brand = newCar.Brand;
+                find.Model = newCar.Model;
+                find.Trasmission = newCar.Trasmission;
+                find.Color = newCar.Color;
+                find.NumbersDoor = newCar.NumbersDoor;
+                AccessFile.SetCars(cars);
 
-                var json = JsonSerializer.Serialize(cars);
-                File.WriteAllText(path, json);
             }
-            return find;
         }
         public void Delete(int id)
         {
-            var path = @"c:\Users\jesus\source\repos\MKcrud\MKcrud\Jfile.json";
-            var Mjson = File.ReadAllText(path);
-            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
-
+            var cars = AccessFile.GetCars();
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -75,8 +60,7 @@ namespace MKcrud
             else if (cars.Remove(find) == true)
             {
                 Console.WriteLine("The was deleted successfully!");
-                var json = JsonSerializer.Serialize(cars);
-                File.WriteAllText(path, json);
+                AccessFile.SetCars(cars);
             }
         }
     }
