@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MKcrud.Class;
 
 namespace MKcrud
 {
     class RentCar
     {
+        public int Id { get; set; }
         public string RentDuration { get; set; }
-        public string RentClient { get; set; }
-        public string RentCars { get; set; }
-        public string RentTime { get; set; }
-
+        public Client RentClient { get; set; }
+        public Car RentCars { get; set; }
+        public string RentTimeIn { get; set; }
+        public string RentTimeOut { get; set; }
         public RentCar() { }
     }
 }
