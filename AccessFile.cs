@@ -1,40 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 
 namespace MKcrud
 {
-    class AccessFile
+    class AccessFile<T>
     {
-        public static List<Client> GetFile()
+
+        public static List<T> GetFile(string file)
         {
-            var file = ConfigurationManager.AppSettings["Customerjson"];
             var Mjson = File.ReadAllText(file);
-            var clients = JsonSerializer.Deserialize<List<Client>>(Mjson);
-            return clients;
+            var list = JsonSerializer.Deserialize<List<T>>(Mjson);
+            return list;
         }
-        public static void SetFile(List<Client>clients)
+        public static void SetFile(List<T> T, string file)
         {
-            var file = ConfigurationManager.AppSettings["Customerjson"];
-            var json = JsonSerializer.Serialize(clients);
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(T, options);
             File.WriteAllText(file, json);
         }
-        public static List<Car> GetCars()
-        {
-            var file = ConfigurationManager.AppSettings["Carjson"];
-            var Mjson = File.ReadAllText(file);
-            var cars = JsonSerializer.Deserialize<List<Car>>(Mjson);
-            return cars;
-        }
-        public static void SetCars(List<Car> cars)
-        {
-            var file = ConfigurationManager.AppSettings["Carjson"];
-            var json = JsonSerializer.Serialize(cars);
-            File.WriteAllText(file, json);
-        }
+
     }
 }
