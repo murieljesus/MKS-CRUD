@@ -1,22 +1,27 @@
-﻿using System;
-
+﻿using MKcrud.Class;
+using System;
+using System.Configuration;
 
 namespace MKcrud
 {
     public class CarCRUD : ICrud
     {
+        string file = ConfigurationManager.AppSettings["Carjson"];
+        MenuConsole menu = new MenuConsole();
+
         public void Create()
         {
-            var menu = new MenuConsole();
-            var cars = AccessFile.GetCars();
+            var cars = AccessFile<Car>.GetFile(file);
             var id = cars.Count;
             var newCar = menu.CarMenu(id);
             cars.Add(newCar);
-            AccessFile.SetCars(cars);
+            AccessFile<Car>.SetFile(cars, file);
+
         }
         public void Get(int id)
         {
-            var cars = AccessFile.GetCars();
+
+            var cars = AccessFile<Car>.GetFile(file);
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -30,7 +35,7 @@ namespace MKcrud
         }
         public void Update(int id)
         {
-            var cars = AccessFile.GetCars();
+            var cars = AccessFile<Car>.GetFile(file);
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -38,20 +43,18 @@ namespace MKcrud
             }
             else
             {
-                var menu = new MenuConsole();
                 var newCar = menu.CarMenu(find.Id);
                 find.Brand = newCar.Brand;
                 find.Model = newCar.Model;
                 find.Trasmission = newCar.Trasmission;
                 find.Color = newCar.Color;
-                find.NumbersDoor = newCar.NumbersDoor;
-                AccessFile.SetCars(cars);
+                AccessFile<Car>.SetFile(cars, file);
 
             }
         }
         public void Delete(int id)
         {
-            var cars = AccessFile.GetCars();
+            var cars = AccessFile<Car>.GetFile(file);
             var find = cars.Find(x => x.Id == id);
             if (find == null)
             {
@@ -60,7 +63,7 @@ namespace MKcrud
             else if (cars.Remove(find) == true)
             {
                 Console.WriteLine("The was deleted successfully!");
-                AccessFile.SetCars(cars);
+                AccessFile<Car>.SetFile(cars, file);
             }
         }
     }

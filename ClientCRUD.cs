@@ -1,22 +1,26 @@
 ﻿using System;
+using System.Configuration;
 
 namespace MKcrud
 {
     public class ClientCRUD : ICrud
     {
+        string file = ConfigurationManager.AppSettings["Customerjson"];
+
         public void Create()
         {
             var flag = false;
+            var clients = AccessFile<Client>.GetFile(file);
             var menu = new MenuConsole();
-            var clients = AccessFile.GetFile();
-            var newClient = menu.ClientMenu(clients,flag);
+            var newClient = menu.ClientMenu(clients, flag);
             clients.Add(newClient);
-            AccessFile.SetFile(clients);
+            AccessFile<Client>.SetFile(clients, file);
+
         }
 
         public void Delete(int id)
         {
-            var clients = AccessFile.GetFile();
+            var clients = AccessFile<Client>.GetFile(file);
             var find = clients.Find(x => x.DNI == id);
             if (find == null)
             {
@@ -24,14 +28,14 @@ namespace MKcrud
             }
             else if (clients.Remove(find) == true)
             {
-                Console.WriteLine("The was deleted successfully!");
-                AccessFile.SetFile(clients);
+                Console.WriteLine("The clietn was deleted successfully!");
+                AccessFile<Client>.SetFile(clients, file);
             }
         }
 
         public void Get(int id)
         {
-            var clients = AccessFile.GetFile();
+            var clients = AccessFile<Client>.GetFile(file);
             var find = clients.Find(x => x.DNI == id);
             if (find == null)
             {
@@ -46,7 +50,7 @@ namespace MKcrud
         public void Update(int id)
         {
             var flag = true;
-            var clients = AccessFile.GetFile();
+            var clients = AccessFile<Client>.GetFile(file);
             var find = clients.Find(x => x.DNI == id);
             if (find == null)
             {
@@ -55,7 +59,7 @@ namespace MKcrud
             else
             {
                 var menu = new MenuConsole();
-               var newClient = menu.ClientMenu(clients,flag);
+                var newClient = menu.ClientMenu(clients, flag);
                 find.Name = newClient.Name;
                 find.LastName = newClient.LastName;
                 find.Phone = newClient.Phone;
@@ -63,7 +67,7 @@ namespace MKcrud
                 find.ZipCode = newClient.ZipCode;
                 find.City = newClient.City;
                 find.Address = newClient.Address;
-                AccessFile.SetFile(clients);
+                AccessFile<Client>.SetFile(clients, file);
 
             }
         }
